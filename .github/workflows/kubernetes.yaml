@@ -1,0 +1,14 @@
+---
+name: operator
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+jobs:
+  lint:
+    name: Deploy kind and test
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Kind Cluster
+      uses: helm/kind-action@v1.2.0
