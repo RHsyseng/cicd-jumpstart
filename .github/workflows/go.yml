@@ -19,6 +19,9 @@ jobs:
     - name: enter working directory
       run: cd reverse-words
       
+    - name: init
+      run: go mod init
+      
     - name: Build
       run: go build -v ./...
 
