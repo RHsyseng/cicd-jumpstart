@@ -17,3 +17,47 @@ jobs:
     
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag quay.io/mavazque/reversewords:${GITHUB_SHA}
+
+    - name: save the image
+      run: docker save -o /tmp/reverse.tar quay.io/mavazque/reversewords:${GITHUB_SHA}
+
+    - name: Save container as artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: reverse-image
+        path: /tmp/reverse.tar
+
+  deploy:
+    name: Deploy kind and test
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Kind Cluster
+      uses: helm/kind-action@v1.2.0
+      
+    - name: Install kubectl
+      run: |
+        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+        sudo install ./kubectl /usr/local/bin/
+        kubectl version --short --client
+    
+    - name: install the kind binary
+      run: |
+        curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.8.1/kind-linux-amd64
+        chmod +x ./kind
+        sudo mv ./kind /usr/local/bin/kind
+        kind version
+
+    - name: deploy router crd
+      run: kubectl apply -f https://raw.githubusercontent.com/konveyor/gitops-primer/main/hack/router-crd.yaml
+
+    - name: pull the image from artifact
+      uses: actions/download-artifact@v1
+      with:
+        name: reverse-image
+        path: /tmp
+
+    - name: Load the image
+      run: docker load -i /tmp/reverse.tar
+
+    - name: Load the image into kind
+      run: kind load docker-image quay.io/mavazque/reversewords:${GITHUB_SHA}
