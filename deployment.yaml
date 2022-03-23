@@ -24,7 +24,7 @@ spec:
         volumeMounts:
           - mountPath: /reversewords-storage/
             name: reversewords-storage
-        image: quay.io/mavazque/reversewords-cicdjumpstart:latest
+        image: quay.io/mavazque/reversewords:latest
         ports:
         - containerPort: 8080
           name: http
