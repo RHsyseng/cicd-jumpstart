@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reverse-words
+  labels:
+    app: reverse-words
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reverse-words
+  template:
+    metadata:
+      labels:
+        app: reverse-words
+    spec:
+      serviceAccountName: reversewordsapp
+      volumes:
+        - name: reversewords-storage
+          persistentVolumeClaim:
+            claimName: reversewords-storage
+      containers:
+      - name: reverse-words
+        volumeMounts:
+          - mountPath: /reversewords-storage/
+            name: reversewords-storage
+        image: quay.io/mavazque/reversewords-cicdjumpstart:latest
+        ports:
+        - containerPort: 8080
+          name: http
+        env:
+        - name: RELEASE
+          valueFrom:
+            configMapKeyRef:
+              name: reversewords-release
+              key: release
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
+          periodSeconds: 15
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 10
+          timeoutSeconds: 2
+          periodSeconds: 15

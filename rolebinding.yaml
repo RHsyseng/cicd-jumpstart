@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: reversewordsapp-read-pods
+subjects:
+- kind: ServiceAccount
+  name: reversewordsapp
+# namespace key will be added by kustomize
+roleRef:
+  kind: Role 
+  name: pod-reader
+  apiGroup: rbac.authorization.k8s.io
