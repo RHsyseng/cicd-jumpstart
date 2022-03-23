@@ -12,3 +12,12 @@ jobs:
     steps:
     - name: Kind Cluster
       uses: helm/kind-action@v1.2.0
+      
+    - name: Install kubectl
+      run: |
+        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+        sudo install ./kubectl /usr/local/bin/
+        kubectl version --short --client
+    
+    - name: deploy router crd
+      run: kubectl apply -f https://raw.githubusercontent.com/konveyor/gitops-primer/main/hack/router-crd.yaml
