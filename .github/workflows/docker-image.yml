@@ -97,3 +97,27 @@ jobs:
 
       - name: push image
         run: docker push quay.io/mavazque/reversewords:${GITHUB_SHA}
+
+  patch-deployment-file:
+    name: patch the deployment and push
+    needs: [ build, deploy, push-image ]
+    runs-on: ubuntu-20.04
+    if: >
+      (github.event_name == 'push' || github.event_name == 'schedule') &&
+      (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
+    steps:
+       - uses: actions/checkout@v2
+         with:
+            path: kube-objects
+
+       - name: patch the file
+         run: |
+           #sed -i s/         image: quay.io/mavazque/reversewords:latest/         image: quay.io/mavazque/reversewords:${GITHUB_SHA}/g kube-objects/kube-objects/deployment.yaml
+
+       - name: Commit files
+         run: |
+             #cd kube-objects
+             #git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+             #git config --local user.name "github-actions[bot]"
+             #git commit -m "color changes" -a
+             #git push -f
