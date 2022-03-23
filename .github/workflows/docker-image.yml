@@ -29,6 +29,7 @@ jobs:
 
   deploy:
     name: Deploy kind and test
+    needs: [ build ]
     runs-on: ubuntu-20.04
     steps:
     - name: Kind Cluster
