@@ -63,6 +63,14 @@ jobs:
     - name: Load the image into kind
       run: kind load docker-image quay.io/mavazque/reversewords:${GITHUB_SHA}
 
+    - name: test the image
+      run: |
+        #sed -i s/         image: quay.io/mavazque/reversewords:latest/         image: quay.io/mavazque/reversewords:${GITHUB_SHA}/g ./kube-objects/deployment.yaml
+        #kubectl apply -f ./kube-objects
+
+    - name: verify 1 ready replica
+      run: kubectl get deployment -n default -o jsonpath='{.status.readyReplicas}'
+
   push-image:
     name: Push image to quay
     needs: [ build, deploy ]
