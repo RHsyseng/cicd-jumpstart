@@ -17,7 +17,7 @@ jobs:
     
     - name: Build the Docker image
       working-directory: ./go-code/
-      run: docker build . --file Dockerfile --tag quay.io/mavazque/reversewords:${GITHUB_SHA}
+      run: docker build . --file ./Dockerfile --tag quay.io/mavazque/reversewords:${GITHUB_SHA}
 
     - name: save the image
       run: docker save -o /tmp/reverse.tar quay.io/mavazque/reversewords:${GITHUB_SHA}
