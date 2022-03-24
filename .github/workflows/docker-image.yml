@@ -65,8 +65,9 @@ jobs:
 
     - name: test the image
       run: |
-        #sed -i s/         image: quay.io/mavazque/reversewords:latest/         image: quay.io/mavazque/reversewords:${GITHUB_SHA}/g ./kube-objects/deployment.yaml
-        #kubectl apply -f ./kube-objects
+#        sed -i s/         image: quay.io/mavazque/reversewords:latest/         image: quay.io/mavazque/reversewords:${GITHUB_SHA}/g ./kube-objects/deployment.yaml
+        sed -i "s|\(.*image:.*:\).*|\1${GITHUB_SHA}|" ./kube-objects/deployment.yaml
+        kubectl apply -f ./kube-objects
 
     - name: verify 1 ready replica
       run: kubectl get deployment -n default -o jsonpath='{.status.readyReplicas}'
