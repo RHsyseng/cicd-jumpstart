@@ -10,17 +10,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      working-directory: ./go-code/
 
     - name: Set up Go
       uses: actions/setup-go@v2
+      working-directory: ./go-code/
       with:
         go-version: 1.16
       
     - name: init
+      working-directory: ./go-code/
       run: go mod tidy
       
     - name: Build
+      working-directory: ./go-code/
       run: go build -v ./...
 
     - name: Test
+      working-directory: ./go-code/
       run: go test -v ./...
