@@ -65,7 +65,6 @@ jobs:
 
     - name: test the image
       run: |
-#        sed -i s/         image: quay.io/mavazque/reversewords:latest/         image: quay.io/mavazque/reversewords:${GITHUB_SHA}/g ./kube-objects/deployment.yaml
         sed -i "s|\(.*image:.*:\).*|\1${GITHUB_SHA}|" ./kube-objects/deployment.yaml
         kubectl apply -f ./kube-objects
 
