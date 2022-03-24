@@ -65,9 +65,10 @@ jobs:
       run: kind load docker-image quay.io/mavazque/reversewords:${GITHUB_SHA}
 
     - name: test the image
+      working-directory: ./kube-objects/
       run: |
-        sed -i "s|\(.*image:.*:\).*|\1${GITHUB_SHA}|" ./kube-objects/deployment.yaml
-        kubectl apply -f ./kube-objects
+        sed -i "s|\(.*image:.*:\).*|\1${GITHUB_SHA}|" ./deployment.yaml
+        kubectl apply -f ./deployment.yaml
 
     - name: verify 1 ready replica
       run: kubectl get deployment -n default -o jsonpath='{.status.readyReplicas}'
@@ -112,12 +113,13 @@ jobs:
             path: kube-objects
 
        - name: patch the file
+         working-directory: ./kube-objects/
          run: |
-           sed -i "s|\(.*image:.*:\).*|\1${GITHUB_SHA}|" ./kube-objects/deployment.yaml
+           sed -i "s|\(.*image:.*:\).*|\1${GITHUB_SHA}|" ./deployment.yaml
 
        - name: Commit files
+         working-directory: ./kube-objects/
          run: |
-             cd kube-objects
              git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
              git config --local user.name "github-actions[bot]"
              git commit -m "Updated deployment file" -a
