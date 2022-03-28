@@ -1,4 +1,4 @@
-name: Go
+name: Go App Build
 on:
   push:
     branches: [ main ]
@@ -16,14 +16,19 @@ jobs:
       with:
         go-version: 1.16
       
-    - name: init
+    - name: Run Linter
+      uses: golangci/golangci-lint-action@v2
+      working-directory: ./go-code/
+
+    - name: Get Dependencies
       working-directory: ./go-code/
       run: go mod tidy
-      
-    - name: Build
+
+    - name: Run Unit Tests
+      working-directory: ./go-code/
+      run: go test -v ./...
+
+    - name: Run Build
       working-directory: ./go-code/
       run: go build -v ./...
 
-    - name: Test
-      working-directory: ./go-code/
-      run: go test -v ./...
