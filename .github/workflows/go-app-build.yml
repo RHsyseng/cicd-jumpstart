@@ -15,14 +15,15 @@ jobs:
       uses: actions/setup-go@v2
       with:
         go-version: 1.16
-      
-    - name: Run Linter
-      uses: golangci/golangci-lint-action@v2
-      working-directory: ./go-code/
 
     - name: Get Dependencies
       working-directory: ./go-code/
       run: go mod tidy
+      
+    - name: Run Linter
+      uses: golangci/golangci-lint-action@v2
+      with:
+        working-directory: ./go-code/
 
     - name: Run Unit Tests
       working-directory: ./go-code/
