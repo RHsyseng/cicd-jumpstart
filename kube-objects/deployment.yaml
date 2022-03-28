@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: reverse-words
-        image: quay.io/mavazque/reversewords:150b366ade808b4b33de98d9be5f526ed47c10bc
+        image: quay.io/mavazque/reversewords:55922c31bb2af538331cdf7b8c8a3dd50c373ab9
         ports:
         - containerPort: 8080
           name: http
