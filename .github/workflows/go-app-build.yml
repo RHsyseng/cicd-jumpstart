@@ -27,9 +27,35 @@ jobs:
 
     - name: Run Unit Tests
       working-directory: ./go-code/
-      run: go test -v ./...
+      run: GOOS=linux GOARCH=amd64 go test -race -cover -v ./...
 
     - name: Run Build
       working-directory: ./go-code/
-      run: go build -v ./...
+      run: CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o reverse-words-linux-amd64 -v ./...
 
+    - name: Save app binary Artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: reverse-words-linux-amd64
+        path: ./go-code/reverse-words-linux-amd64
+
+  release:
+    name: Creates a new release with the resulting binary
+    needs: [build]
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Pull the app binary from Artifacts
+      uses: actions/download-artifact@v1
+      with:
+        name: reverse-words-linux-amd64
+        path: /tmp/
+  
+    - name: Upload binary to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: /tmp/reverse-words-linux-amd64
+        asset_name: reverse-words-linux-amd64
+        tag: ${{ github.ref }}
+        overwrite: true
+        body: "Automatic release created by a GitHub Action"
