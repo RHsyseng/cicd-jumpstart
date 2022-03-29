@@ -69,8 +69,8 @@ jobs:
     - name: Create a Deployment with the new Container Image
       working-directory: ./kube-objects/
       run: |
-        sed -i "s|\(.*image:.*:\).*|\1${GITHUB_SHA}|" deployment.yaml
-        kubectl apply -f deployment.yaml
+        sed -i "s|\(.*image:.*:\).*|\1${GITHUB_SHA}|" Deployment_reverse-words-app_reverse-words.yaml
+        kubectl apply -f Deployment_reverse-words-app_reverse-words.yaml
 
     - name: Verify Deployment has 1 ready replica
       run: kubectl get deployment -n default -o jsonpath='{.status.readyReplicas}'
@@ -115,7 +115,7 @@ jobs:
        - name: Patch the Deployment file
          working-directory: ./kube-objects/
          run: |
-           sed -i "s|\(.*image:.*:\).*|\1${GITHUB_SHA}|" deployment.yaml
+           sed -i "s|\(.*image:.*:\).*|\1${GITHUB_SHA}|" Deployment_reverse-words-app_reverse-words.yaml
 
        - name: Commit and Push changes
          working-directory: ./kube-objects/
