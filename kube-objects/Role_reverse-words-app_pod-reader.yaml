@@ -2,15 +2,12 @@ apiVersion: authorization.openshift.io/v1
 kind: Role
 metadata:
   annotations:
-    kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"rbac.authorization.k8s.io/v1","kind":"Role","metadata":{"annotations":{},"labels":{"app":"reversewords-app"},"name":"pod-reader","namespace":"reverse-words-app"},"rules":[{"apiGroups":[""],"resources":["pods"],"verbs":["get","watch","list"]}]}
   labels:
     app: reversewords-app
   name: pod-reader
 rules:
 - apiGroups:
   - ""
-  attributeRestrictions: null
   resources:
   - pods
   verbs:

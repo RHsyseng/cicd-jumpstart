@@ -1,10 +1,7 @@
 apiVersion: authorization.openshift.io/v1
-groupNames: null
 kind: RoleBinding
 metadata:
   annotations:
-    kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"rbac.authorization.k8s.io/v1","kind":"RoleBinding","metadata":{"annotations":{},"labels":{"app":"reversewords-app"},"name":"reversewordsapp-read-pods","namespace":"reverse-words-app"},"roleRef":{"apiGroup":"rbac.authorization.k8s.io","kind":"Role","name":"pod-reader"},"subjects":[{"kind":"ServiceAccount","name":"reversewordsapp","namespace":"reverse-words-app"}]}
   labels:
     app: reversewords-app
   name: reversewordsapp-read-pods
