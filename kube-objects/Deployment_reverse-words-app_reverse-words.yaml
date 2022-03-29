@@ -29,7 +29,7 @@ spec:
             configMapKeyRef:
               key: release
               name: reversewords-release
-        image: quay.io/mavazque/reversewords:d0f092a99fb2e785224b08eaa8189c0f6b74a7be
+        image: quay.io/mavazque/reversewords:c7da63545df513307ab7ddc02e797561402bee97
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 3
