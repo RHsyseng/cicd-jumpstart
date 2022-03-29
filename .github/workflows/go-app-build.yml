@@ -56,6 +56,6 @@ jobs:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: /tmp/reverse-words-linux-amd64
         asset_name: reverse-words-linux-amd64
-        tag: ${{ github.ref }}
+        tag: ${{ github.ref }}-release
         overwrite: true
         body: "Automatic release created by a GitHub Action"
